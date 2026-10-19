@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PandoraMT2 - Baza Wiedzy & Misje</title>
+    <title>PandoraMT2 - Baza Wiedzy, Misje & Ekwipunek PvP</title>
     <!-- Tailwind CSS CDN for modern professional styling -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,6 +33,117 @@
             border-color: rgba(56, 189, 248, 0.5);
         }
 
+        /* Wierna kopia okna EQ Metin2 */
+        .metin-eq {
+            width: 254px;
+            background: #1c202d;
+            border: 2px solid #4b5563;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            font-family: Tahoma, sans-serif;
+            user-select: none;
+        }
+
+        .metin-eq-titlebar {
+            background: linear-gradient(to bottom, #374151, #1f2937);
+            color: #e5e7eb;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #000;
+        }
+
+        .metin-paperdoll {
+            position: relative;
+            height: 200px;
+            background: #181b24;
+            border-bottom: 2px solid #2d3348;
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.02) 0%, transparent 70%);
+        }
+
+        .slot {
+            position: absolute;
+            width: 38px;
+            height: 38px;
+            background: #11131a;
+            border: 1px solid #374151;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .slot:hover {
+            border-color: #38bdf8;
+            background: #1f2433;
+        }
+
+        .slot.active {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.15);
+            box-shadow: inset 0 0 6px rgba(56, 189, 248, 0.4);
+        }
+
+        .slot-weapon { top: 12px; left: 12px; width: 38px; height: 78px; }
+        .slot-helmet { top: 12px; left: 108px; }
+        .slot-armor  { top: 52px; left: 108px; }
+        .slot-shield { top: 12px; left: 204px; }
+        .slot-earrings { top: 54px; left: 204px; }
+        .slot-bracelet { top: 96px; left: 204px; }
+        .slot-necklace { top: 138px; left: 204px; }
+        .slot-shoes   { top: 138px; left: 108px; }
+
+        .metin-inventory {
+            padding: 6px;
+            background: #11131a;
+        }
+
+        .inv-tabs-row {
+            display: flex;
+            background: #181b24;
+            border: 1px solid #2d3348;
+            border-radius: 2px;
+            margin-bottom: 4px;
+        }
+
+        .inv-tab-btn {
+            flex: 1;
+            text-align: center;
+            font-size: 10px;
+            color: #9ca3af;
+            padding: 3px;
+            background: #141720;
+            border-right: 1px solid #2d3348;
+        }
+
+        .inv-tab-btn.active {
+            background: #252a3a;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .inv-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            background: #090a0f;
+            padding: 3px;
+            border: 1px solid #1f2433;
+        }
+
+        .inv-cell {
+            width: 56px;
+            height: 56px;
+            background: #151821;
+            border: 1px solid #222736;
+            border-radius: 2px;
+        }
+
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -41,7 +152,7 @@
             background: #0f172a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #334155;
+            background: #334151;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
@@ -64,31 +175,37 @@
                     <h1 class="font-cinzel font-bold text-2xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300">
                         PandoraMT2
                     </h1>
-                    <p class="text-xs text-slate-400 tracking-widest uppercase font-semibold">Baza Misji & Poradnik</p>
+                    <p class="text-xs text-slate-400 tracking-widest uppercase font-semibold">Baza Wiedzy & PvP</p>
                 </div>
             </div>
 
             <!-- DESKTOP NAV LINKS -->
-            <nav class="hidden md:flex items-center gap-2">
-                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 bg-sky-500/10 text-sky-400 border border-sky-500/30">
-                    <i class="fa-solid fa-house mr-2"></i> Strona Główna
+            <nav class="hidden xl:flex items-center gap-2">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 bg-sky-500/10 text-sky-400 border border-sky-500/30">
+                    <i class="fa-solid fa-house mr-1.5"></i> Start
                 </button>
-                <button onclick="switchTab('biolog')" id="nav-biolog" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800">
-                    <i class="fa-solid fa-flask mr-2"></i> Badania Biologa
+                <button onclick="switchTab('biolog')" id="nav-biolog" class="nav-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-flask mr-1.5"></i> Biolog
                 </button>
-                <button onclick="switchTab('rybak')" id="nav-rybak" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800">
-                    <i class="fa-solid fa-fish mr-2"></i> Badania Rybaka
+                <button onclick="switchTab('rybak')" id="nav-rybak" class="nav-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-fish mr-1.5"></i> Rybak
+                </button>
+                <button onclick="switchTab('pvp-fizyczne')" id="nav-pvp-fizyczne" class="nav-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-shield-halved mr-1.5"></i> 1v1 Fizyczne
+                </button>
+                <button onclick="switchTab('pvp-magiczne')" id="nav-pvp-magiczne" class="nav-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> 1v1 Magiczne
                 </button>
             </nav>
 
             <!-- QUICK SEARCH INPUT -->
             <div class="hidden lg:flex items-center relative">
                 <i class="fa-solid fa-search absolute left-3 text-slate-400 text-sm"></i>
-                <input type="text" id="globalSearch" placeholder="Szukaj przedmiotu lub nagrody..." onkeyup="filterTables()" class="bg-slate-900 border border-slate-700 text-sm rounded-lg pl-9 pr-4 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 w-64">
+                <input type="text" id="globalSearch" placeholder="Szukaj przedmiotu lub nagrody..." onkeyup="filterTables()" class="bg-slate-900 border border-slate-700 text-sm rounded-lg pl-9 pr-4 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 w-56">
             </div>
 
             <!-- MOBILE MENU BUTTON -->
-            <div class="md:hidden flex items-center">
+            <div class="xl:hidden flex items-center">
                 <button onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white p-2 focus:outline-none">
                     <i class="fa-solid fa-bars text-xl" id="mobileMenuIcon"></i>
                 </button>
@@ -96,10 +213,12 @@
         </div>
 
         <!-- MOBILE DROPDOWN -->
-        <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2">
+        <div id="mobileMenu" class="hidden xl:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2">
             <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-sky-400 bg-sky-500/10">Strona Główna</button>
             <button onclick="switchTab('biolog'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800">Badania Biologa</button>
             <button onclick="switchTab('rybak'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800">Badania Rybaka</button>
+            <button onclick="switchTab('pvp-fizyczne'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800">1v1 vs Klasy Fizyczne</button>
+            <button onclick="switchTab('pvp-magiczne'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800">1v1 vs Klasy Magiczne</button>
         </div>
     </header>
 
@@ -119,59 +238,63 @@
                         Witaj w Bazie Wiedzy <span class="text-sky-400 glow-effect">PandoraMT2</span>
                     </h2>
                     <p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed">
-                        Twój niezastąpiony asystent w drodze na 250 poziom. Szybko sprawdź wymagane przedmioty na badania biologa oraz rybaka bez szukania po forum.
+                        Twój niezastąpiony asystent w drodze na szczyt. Sprawdzaj badania biologa, rybaka oraz optymalny ekwipunek PvP w jednym miejscu.
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <button onclick="switchTab('biolog')" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold transition shadow-lg shadow-sky-500/20 flex items-center gap-2">
-                            <i class="fa-solid fa-flask"></i> Przejdź do Biologa
+                            <i class="fa-solid fa-flask"></i> Badania Biologa
                         </button>
-                        <button onclick="switchTab('rybak')" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold border border-slate-700 transition flex items-center gap-2">
-                            <i class="fa-solid fa-fish"></i> Przejdź do Rybaka
+                        <button onclick="switchTab('pvp-fizyczne')" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold border border-indigo-500/30 transition flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i> Zestawy PvP 1v1
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- QUICK ACCESS CARDS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <!-- Card Biolog -->
                 <div onclick="switchTab('biolog')" class="card-hover bg-slate-900/80 border border-slate-800 rounded-2xl p-6 cursor-pointer relative overflow-hidden group">
-                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl group-hover:bg-sky-500/20 transition"></div>
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-14 h-14 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 text-2xl">
-                            <i class="fa-solid fa-flask"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-cinzel text-xl font-bold text-white">Badania Biologa</h3>
-                            <p class="text-sm text-slate-400">Od 30 do 220 poziomu postaci</p>
-                        </div>
+                    <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 text-xl mb-4">
+                        <i class="fa-solid fa-flask"></i>
                     </div>
-                    <p class="text-slate-300 text-sm mb-4">
-                        Sprawdź pełną rozpiskę od Zębów Orka aż po Klejnoty Mądrości. Zobacz jakie dają bonusy stałe i jakie szkatułki bossów otrzymasz w nagrodę.
-                    </p>
-                    <div class="flex items-center text-sky-400 text-sm font-semibold gap-2">
-                        <span>Otwórz tabelę biologa</span> <i class="fa-solid fa-arrow-right text-xs transition group-hover:translate-x-1"></i>
-                    </div>
+                    <h3 class="font-cinzel text-lg font-bold text-white mb-1">Badania Biologa</h3>
+                    <p class="text-slate-400 text-xs mb-3">Od 30 do 220 poziomu</p>
+                    <p class="text-slate-300 text-xs mb-4">Zęby orka, konary, klejnoty i nagrody stałe.</p>
+                    <span class="text-sky-400 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition">Sprawdź tabelę <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
                 </div>
 
                 <!-- Card Rybak -->
                 <div onclick="switchTab('rybak')" class="card-hover bg-slate-900/80 border border-slate-800 rounded-2xl p-6 cursor-pointer relative overflow-hidden group">
-                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition"></div>
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-14 h-14 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-2xl">
-                            <i class="fa-solid fa-fish"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-cinzel text-xl font-bold text-white">Badania Rybaka</h3>
-                            <p class="text-sm text-slate-400">Od 100 do 250 poziomu postaci</p>
-                        </div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-xl mb-4">
+                        <i class="fa-solid fa-fish"></i>
                     </div>
-                    <p class="text-slate-300 text-sm mb-4">
-                        Zdobądź unikalne bonusy na potwory i ludzi. Rozpiska ryb od Karaśa aż po Amura z nagrodami ze skrzyniami włącznie.
-                    </p>
-                    <div class="flex items-center text-indigo-400 text-sm font-semibold gap-2">
-                        <span>Otwórz tabelę rybaka</span> <i class="fa-solid fa-arrow-right text-xs transition group-hover:translate-x-1"></i>
+                    <h3 class="font-cinzel text-lg font-bold text-white mb-1">Badania Rybaka</h3>
+                    <p class="text-slate-400 text-xs mb-3">Od 100 do 250 poziomu</p>
+                    <p class="text-slate-300 text-xs mb-4">Karaś, karp, amur i unikalne bonusy na potwory.</p>
+                    <span class="text-indigo-400 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition">Sprawdź tabelę <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                </div>
+
+                <!-- Card PvP Fizyczne -->
+                <div onclick="switchTab('pvp-fizyczne')" class="card-hover bg-slate-900/80 border border-slate-800 rounded-2xl p-6 cursor-pointer relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-600/10 border border-sky-600/30 flex items-center justify-center text-sky-400 text-xl mb-4">
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
+                    <h3 class="font-cinzel text-lg font-bold text-white mb-1">1v1 vs Fizyczne</h3>
+                    <p class="text-slate-400 text-xs mb-3">Wojownik / Ninja / Sura WP</p>
+                    <p class="text-slate-300 text-xs mb-4">Odporności na broń, bloki i idealne 5 bonusów.</p>
+                    <span class="text-sky-400 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition">Otwórz EQ PvP <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                </div>
+
+                <!-- Card PvP Magiczne -->
+                <div onclick="switchTab('pvp-magiczne')" class="card-hover bg-slate-900/80 border border-slate-800 rounded-2xl p-6 cursor-pointer relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl mb-4">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="font-cinzel text-lg font-bold text-white mb-1">1v1 vs Magiczne</h3>
+                    <p class="text-slate-400 text-xs mb-3">Sura BM / Szamani</p>
+                    <p class="text-slate-300 text-xs mb-4">Maks. odporność na magię i dzwony/wachlarze.</p>
+                    <span class="text-purple-400 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition">Otwórz EQ PvP <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
                 </div>
             </div>
         </section>
@@ -207,9 +330,7 @@
                                 <td class="py-4 px-6 font-semibold text-white">Ząb Orka</td>
                                 <td class="py-4 px-6 text-center text-sky-300 font-medium">30</td>
                                 <td class="py-4 px-6 text-center text-slate-300">10</td>
-                                <td class="py-4 px-6">
-                                    <span class="text-sky-400 font-medium">Szybkość Ruchu: +10%</span>
-                                </td>
+                                <td class="py-4 px-6"><span class="text-sky-400 font-medium">Szybkość Ruchu: +10%</span></td>
                             </tr>
                             <tr class="hover:bg-slate-800/40 transition">
                                 <td class="py-4 px-6 font-semibold text-white">Księga Klątw</td>
@@ -244,8 +365,7 @@
                                 <td class="py-4 px-6 text-center text-slate-300">25</td>
                                 <td class="py-4 px-6 space-y-1">
                                     <div class="text-sky-400 font-medium">Odporność na Obrażenia: +10%</div>
-                                    <div class="text-sky-400 font-medium">Szybkość Ruchu: +15%</div>
-                                    <div class="text-amber-400 text-xs font-medium">Szkatułka Ognistego króla</div>
+                                    <div class="text-amber-400 text-xs font-medium">Szkatułka Ognistego Króla</div>
                                 </td>
                             </tr>
                             <tr class="hover:bg-slate-800/40 transition">
@@ -253,8 +373,7 @@
                                 <td class="py-4 px-6 text-center text-sky-300 font-medium">80</td>
                                 <td class="py-4 px-6 text-center text-slate-300">30</td>
                                 <td class="py-4 px-6 space-y-1">
-                                    <div class="text-sky-400 font-medium">Szybkość Ataku: +15%</div>
-                                    <div class="text-sky-400 font-medium">Wartość Ataku: +10%</div>
+                                    <div class="text-sky-400 font-medium">Szybkość Ataku: +15% / Wartość Ataku: +10%</div>
                                     <div class="text-amber-400 text-xs font-medium">Szkatułka Umarłego Rozpruwacza</div>
                                 </td>
                             </tr>
@@ -281,9 +400,7 @@
                                 <td class="py-4 px-6 text-center text-sky-300 font-medium">190</td>
                                 <td class="py-4 px-6 text-center text-slate-300">10</td>
                                 <td class="py-4 px-6 space-y-1">
-                                    <div class="text-sky-400 font-medium">Maks. PŻ: +500</div>
-                                    <div class="text-sky-400 font-medium">Wartość Magicznego Ataku: +50</div>
-                                    <div class="text-sky-400 font-medium">Wartości Ataku: +50</div>
+                                    <div class="text-sky-400 font-medium">Maks. PŻ: +500 | Wartość Ataku: +50</div>
                                     <div class="text-amber-400 text-xs font-medium">Szkatułka Berana Setaou</div>
                                 </td>
                             </tr>
@@ -292,9 +409,7 @@
                                 <td class="py-4 px-6 text-center text-sky-300 font-medium">220</td>
                                 <td class="py-4 px-6 text-center text-slate-300">10</td>
                                 <td class="py-4 px-6 space-y-1">
-                                    <div class="text-sky-400 font-medium">Maks. PŻ: +1100</div>
-                                    <div class="text-sky-400 font-medium">Wartość Magicznego Ataku: +60</div>
-                                    <div class="text-sky-400 font-medium">Wartości Ataku: +60</div>
+                                    <div class="text-sky-400 font-medium">Maks. PŻ: +1100 | Wartość Ataku: +60</div>
                                     <div class="text-amber-400 text-xs font-medium">Szkatułka Azraela</div>
                                 </td>
                             </tr>
@@ -391,44 +506,202 @@
             </div>
         </section>
 
+        <!-- ==================== TAB 4: PVP FIZYCZNE ==================== -->
+        <section id="tab-pvp-fizyczne" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+                    <i class="fa-solid fa-shield-halved text-sky-400"></i> Zestaw 1v1 vs Klasy Fizyczne
+                </h2>
+                <p class="text-sm text-slate-400 mt-1">Wojownik / Ninja / Sura WP – priorytetem jest odporność na broń przeciwnika, bloki oraz krytyk/przeszywka.</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <!-- Okno EQ Metin2 -->
+                <div class="metin-eq shrink-0">
+                    <div class="metin-eq-titlebar">
+                        <span>Ekwipunek PvP (Fizyczny)</span>
+                        <span>✕</span>
+                    </div>
+                    <div class="metin-paperdoll">
+                        <div class="slot slot-weapon active" onmouseenter="showPvpItem('fizyczne', 'weapon')" onclick="showPvpItem('fizyczne', 'weapon')"><span class="text-xl">🗡️</span></div>
+                        <div class="slot slot-helmet" onmouseenter="showPvpItem('fizyczne', 'helmet')" onclick="showPvpItem('fizyczne', 'helmet')"><span class="text-lg">🪖</span></div>
+                        <div class="slot slot-armor" onmouseenter="showPvpItem('fizyczne', 'armor')" onclick="showPvpItem('fizyczne', 'armor')"><span class="text-lg">🛡️</span></div>
+                        <div class="slot slot-shield" onmouseenter="showPvpItem('fizyczne', 'shield')" onclick="showPvpItem('fizyczne', 'shield')"><span class="text-lg">🛡️</span></div>
+                        <div class="slot slot-earrings" onmouseenter="showPvpItem('fizyczne', 'earrings')" onclick="showPvpItem('fizyczne', 'earrings')"><span class="text-lg">💎</span></div>
+                        <div class="slot slot-bracelet" onmouseenter="showPvpItem('fizyczne', 'bracelet')" onclick="showPvpItem('fizyczne', 'bracelet')"><span class="text-lg">💍</span></div>
+                        <div class="slot slot-necklace" onmouseenter="showPvpItem('fizyczne', 'necklace')" onclick="showPvpItem('fizyczne', 'necklace')"><span class="text-lg">📿</span></div>
+                        <div class="slot slot-shoes" onmouseenter="showPvpItem('fizyczne', 'shoes')" onclick="showPvpItem('fizyczne', 'shoes')"><span class="text-lg">👢</span></div>
+                    </div>
+                    <div class="metin-inventory">
+                        <div class="inv-tabs-row">
+                            <div class="inv-tab-btn active">I</div>
+                            <div class="inv-tab-btn">II</div>
+                        </div>
+                        <div class="inv-grid">
+                            <div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div>
+                            <div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div>
+                            <div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel informacyjny (Tooltip) -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 w-full max-w-lg min-h-[340px] flex flex-col justify-between shadow-inner">
+                    <div>
+                        <div class="flex items-center gap-3 border-b border-sky-500/20 pb-3 mb-4">
+                            <span id="title-icon-fizyczne" class="text-2xl">🗡️</span>
+                            <h3 id="title-name-fizyczne" class="font-cinzel text-lg font-bold text-amber-200">Broń (dwuręczna lub jednoręczna)</h3>
+                        </div>
+                        <ul id="list-bonuses-fizyczne" class="space-y-2.5 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="text-sky-400 font-bold">•</span> Silny przeciwko Ludziom (10/15%)</li>
+                            <li class="flex items-center gap-2"><span class="text-sky-400 font-bold">•</span> Siła +12 (+15)</li>
+                            <li class="flex items-center gap-2"><span class="text-sky-400 font-bold">•</span> Szansa na cios krytyczny (10%)</li>
+                            <li class="flex items-center gap-2"><span class="text-sky-400 font-bold">•</span> Szansa na cios przeszywający (10%)</li>
+                            <li class="flex items-center gap-2"><span class="text-sky-400 font-bold">•</span> Szybkość Zaklęcia (20%)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-sky-400/80 bg-sky-500/10 border border-sky-500/20 rounded-lg p-3 mt-4">
+                        💡 Kliknij lub najedź na dowolny element ekwipunku po lewej stronie, aby podejrzeć wymagane perf 5 bonusów.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PVP MAGICZNE ==================== -->
+        <section id="tab-pvp-magiczne" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+                    <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Zestaw 1v1 vs Klasy Magiczne
+                </h2>
+                <p class="text-sm text-slate-400 mt-1">Sura BM / Szamani – magia ignoruje obronę i blok, kluczem jest max odporność na magię, PŻ i szybkość zaklęć.</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <!-- Okno EQ Metin2 -->
+                <div class="metin-eq shrink-0">
+                    <div class="metin-eq-titlebar">
+                        <span>Ekwipunek PvP (Magiczny)</span>
+                        <span>✕</span>
+                    </div>
+                    <div class="metin-paperdoll">
+                        <div class="slot slot-weapon active" onmouseenter="showPvpItem('magiczne', 'weapon')" onclick="showPvpItem('magiczne', 'weapon')"><span class="text-xl">🪄</span></div>
+                        <div class="slot slot-helmet" onmouseenter="showPvpItem('magiczne', 'helmet')" onclick="showPvpItem('magiczne', 'helmet')"><span class="text-lg">🪖</span></div>
+                        <div class="slot slot-armor" onmouseenter="showPvpItem('magiczne', 'armor')" onclick="showPvpItem('magiczne', 'armor')"><span class="text-lg">🛡️</span></div>
+                        <div class="slot slot-shield" onmouseenter="showPvpItem('magiczne', 'shield')" onclick="showPvpItem('magiczne', 'shield')"><span class="text-lg">🛡️</span></div>
+                        <div class="slot slot-earrings" onmouseenter="showPvpItem('magiczne', 'earrings')" onclick="showPvpItem('magiczne', 'earrings')"><span class="text-lg">💎</span></div>
+                        <div class="slot slot-bracelet" onmouseenter="showPvpItem('magiczne', 'bracelet')" onclick="showPvpItem('magiczne', 'bracelet')"><span class="text-lg">💍</span></div>
+                        <div class="slot slot-necklace" onmouseenter="showPvpItem('magiczne', 'necklace')" onclick="showPvpItem('magiczne', 'necklace')"><span class="text-lg">📿</span></div>
+                        <div class="slot slot-shoes" onmouseenter="showPvpItem('magiczne', 'shoes')" onclick="showPvpItem('magiczne', 'shoes')"><span class="text-lg">👢</span></div>
+                    </div>
+                    <div class="metin-inventory">
+                        <div class="inv-tabs-row">
+                            <div class="inv-tab-btn active">I</div>
+                            <div class="inv-tab-btn">II</div>
+                        </div>
+                        <div class="inv-grid">
+                            <div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div>
+                            <div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div>
+                            <div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div><div class="inv-cell"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel informacyjny (Tooltip) -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 w-full max-w-lg min-h-[340px] flex flex-col justify-between shadow-inner">
+                    <div>
+                        <div class="flex items-center gap-3 border-b border-purple-500/20 pb-3 mb-4">
+                            <span id="title-icon-magiczne" class="text-2xl">🪄</span>
+                            <h3 id="title-name-magiczne" class="font-cinzel text-lg font-bold text-amber-200">Broń</h3>
+                        </div>
+                        <ul id="list-bonuses-magiczne" class="space-y-2.5 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">•</span> Silny przeciwko Ludziom (10/15%)</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">•</span> Siła +12 (+15)</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">•</span> Szybkość Zaklęcia (20%)</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">•</span> Szansa na cios krytyczny (10%)</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">•</span> Szansa na cios przeszywający (10%)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-400/80 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3 mt-4">
+                        💡 Kliknij lub najedź na dowolny element ekwipunku po lewej stronie, aby podejrzeć wymagane perf 5 bonusów.
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- FOOTER -->
     <footer class="bg-slate-950 border-t border-slate-900 mt-auto py-6 text-center text-xs text-slate-500">
-        <p>PandoraMT2 Baza Wiedzy &copy; 2026. Stworzone dla szybkiego dostępu do badań Biologa i Rybaka.</p>
+        <p>PandoraMT2 Baza Wiedzy &copy; 2026. Stworzone dla szybkiego dostępu do badań Biologa, Rybaka i ekwipunku PvP.</p>
     </footer>
 
     <!-- INTERACTIVITY SCRIPT -->
     <script>
+        const pvpData = {
+            'fizyczne': {
+                'weapon': { name: 'Broń (dwuręczna lub jednoręczna)', icon: '🗡️', bonuses: ['Silny przeciwko Ludziom (10/15%)', 'Siła +12 (+15)', 'Szansa na cios krytyczny (10%)', 'Szansa na cios przeszywający (10%)', 'Szybkość Zaklęcia (20%)'] },
+                'armor': { name: 'Zbroja', icon: '🛡️', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Odporność na broń wroga (Miecze / Dwuręka / Sztylety) (15%)', 'Szybkość Zaklęcia (20%)', 'Wartość Ataku (+50) / Odbicie ciosu', 'Szansa na cios krytyczny / Inna odporność'] },
+                'helmet': { name: 'Hełm', icon: '🪖', bonuses: ['Silny przeciwko Ludziom (10/15%)', 'Szybkość Ataku (10%)', 'Regeneracja PŻ (30%)', 'Szansa na Truciznę (8%)', 'Szansa na Unik Strzał (15%) / Odporność na Magię'] },
+                'shield': { name: 'Tarcza (Sokoła / Tygrysa / Lwia)', icon: '🛡️', bonuses: ['Niewrażliwy na Omdlenia (NNO)', 'Silny przeciwko Ludziom (10/15%)', 'Siła +12 (+15)', 'Szansa na blok ciosów (15%)', 'Szansa na odbicie ciosu bezpośredniego (15%)'] },
+                'bracelet': { name: 'Bransoleta (Z Niebiańskich Łez / Srebrna)', icon: '💍', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Silny przeciwko Ludziom (10/15%)', 'Szansa na cios przeszywający (10%)', 'Obrażenia absorbowane przez PŻ (10%)', 'Odporność na Magię (15%)'] },
+                'earrings': { name: 'Kolczyki (Ebonitowe)', icon: '💎', bonuses: ['Silny przeciwko Ludziom (10/15%)', 'Odporność na broń wroga (15%)', 'Odporność na Strzały (15% - pod Archera)', 'Szybkość Ruchu (20%)', 'Odporność na Trudności / Inna'] },
+                'necklace': { name: 'Naszyjnik (Z Niebiańskich Łez)', icon: '📿', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Odporność na broń wroga (15%)', 'Szansa na cios krytyczny (10%)', 'Szansa na cios przeszywający (10%)', 'Omdlenie / Regeneracja PŻ'] },
+                'shoes': { name: 'Buty (Feniksa – dają blok ciosów)', icon: '👢', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Odporność na broń wroga (15%)', 'Szansa na cios krytyczny (10%)', 'Szansa na Omdlenie (8%)', 'Szybkość Ataku / Odporność na Strzały'] }
+            },
+            'magiczne': {
+                'weapon': { name: 'Broń', icon: '🪄', bonuses: ['Silny przeciwko Ludziom (10/15%)', 'Siła +12 (+15)', 'Szybkość Zaklęcia (20%)', 'Szansa na cios krytyczny (10%)', 'Szansa na cios przeszywający (10%)'] },
+                'armor': { name: 'Zbroja', icon: '🛡️', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Odporność na Dzwony / Wachlarze (15% - vs Szaman)', 'Szybkość Zaklęcia (20%)', 'Wartość Ataku (+50)', 'Obrażenia absorbowane przez PŻ (10%)'] },
+                'helmet': { name: 'Hełm', icon: '🪖', bonuses: ['Silny przeciwko Ludziom (10/15%)', 'Odporność na Magię (15%) (Kluczowy bon!)', 'Szansa na Truciznę (8%)', 'Szybkość Ataku (10%)', 'Regeneracja PŻ (30%)'] },
+                'shield': { name: 'Tarcza (Lwia / Smoków)', icon: '🛡️', bonuses: ['Niewrażliwy na Omdlenia (NNO)', 'Silny przeciwko Ludziom (10/15%)', 'Siła +12 (+15)', 'Zręczność / Energia Życia (VIT) +12', 'Szansa na blok ciosów (15%)'] },
+                'bracelet': { name: 'Bransoleta', icon: '💍', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Silny przeciwko Ludziom (10/15%)', 'Odporność na Magię (15%) (Kluczowy bon!)', 'Szansa na cios przeszywający (10%)', 'Obrażenia absorbowane przez PŻ'] },
+                'earrings': { name: 'Kolczyki (Ebonitowe)', icon: '💎', bonuses: ['Silny przeciwko Ludziom (10/15%)', 'Odporność na Dzwony / Wachlarze (15% - vs Szaman)', 'Szybkość Ruchu (20%)', 'Odporność na Trucizny / Inne', 'Odporność na Krwawienie'] },
+                'necklace': { name: 'Naszyjnik', icon: '📿', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Odporność na Dzwony / Wachlarze (15% - vs Szaman)', 'Szansa na cios krytyczny (10%)', 'Szansa na Omdlenie (8%)', 'Szansa na cios przeszywający (10%)'] },
+                'shoes': { name: 'Buty (Ekstazy / Ptaka Deszczu)', icon: '👢', bonuses: ['Maks. PŻ (+1500 / +2000)', 'Odporność na Dzwony / Wachlarze (15% - vs Szaman)', 'Szansa na cios krytyczny (10%)', 'Szansa na Omdlenie (8%)', 'Szybkość Ataku (10%)'] }
+            }
+        };
+
         function switchTab(tabId) {
-            // Hide all tabs
             const tabs = document.querySelectorAll('.tab-content');
             tabs.forEach(tab => tab.classList.add('hidden'));
 
-            // Show selected tab
             const target = document.getElementById('tab-' + tabId);
             if (target) {
                 target.classList.remove('hidden');
             }
 
-            // Update navigation active states
             const buttons = document.querySelectorAll('.nav-btn');
             buttons.forEach(btn => {
-                btn.className = "nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800";
+                btn.className = "nav-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800";
             });
 
             const activeBtn = document.getElementById('nav-' + tabId);
             if (activeBtn) {
-                activeBtn.className = "nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 bg-sky-500/10 text-sky-400 border border-sky-500/30";
+                activeBtn.className = "nav-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 bg-sky-500/10 text-sky-400 border border-sky-500/30";
             }
 
-            // Scroll to top smoothly
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
+        }
+
+        function showPvpItem(type, itemKey) {
+            const item = pvpData[type][itemKey];
+            if (!item) return;
+
+            document.getElementById('title-icon-' + type).innerText = item.icon;
+            document.getElementById('title-name-' + type).innerText = item.name;
+
+            const listEl = document.getElementById('list-bonuses-' + type);
+            listEl.innerHTML = '';
+            item.bonuses.forEach(b => {
+                const li = document.createElement('li');
+                li.className = "flex items-center gap-2";
+                li.innerHTML = `<span class="${type === 'magiczne' ? 'text-purple-400' : 'text-sky-400'} font-bold">•</span> ${b}`;
+                listEl.appendChild(li);
+            });
         }
 
         function filterTableContent(tableId, query) {
@@ -452,14 +725,9 @@
         function filterTables() {
             const query = document.getElementById('globalSearch').value.toLowerCase();
             if (query.trim() !== '') {
-                // Automatically switch to biolog or rybak if searching or search across both
-                // For simplicity, let's filter whatever is visible or switch to biolog if on home
                 const activeTab = document.querySelector('.tab-content:not(.hidden)').id;
-                if (activeTab === 'tab-home') {
+                if (activeTab === 'tab-home' || activeTab === 'tab-biolog') {
                     switchTab('biolog');
-                    document.getElementById('searchBiolog').value = query;
-                    filterTableContent('biologTable', query);
-                } else if (activeTab === 'tab-biolog') {
                     document.getElementById('searchBiolog').value = query;
                     filterTableContent('biologTable', query);
                 } else if (activeTab === 'tab-rybak') {
